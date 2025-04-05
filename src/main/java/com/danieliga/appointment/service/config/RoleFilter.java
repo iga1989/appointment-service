@@ -2,6 +2,7 @@ package com.danieliga.appointment.service.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,8 +34,19 @@ public class RoleFilter extends OncePerRequestFilter {
 
         // Extract JWT token from the Authorization header
         String jwtToken = request.getHeader("Authorization");
-        if (jwtToken != null) {
-            jwtTokenHolder.set(jwtToken); // Store the token in ThreadLocal
+        String jwtToken2 = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    jwtToken2 = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (jwtToken2 != null) {
+            jwtTokenHolder.set(jwtToken2); // Store the token in ThreadLocal
         }
 
         // Read roles from the request header set by the API Gateway

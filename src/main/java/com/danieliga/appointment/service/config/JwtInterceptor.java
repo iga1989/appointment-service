@@ -21,7 +21,8 @@ public class JwtInterceptor implements ClientHttpRequestInterceptor {
         // If JWT token is present, add it to the Authorization header
         if (jwtToken != null && !jwtToken.isEmpty()) {
             HttpHeaders headers = request.getHeaders();
-            headers.add("Authorization", jwtToken);
+//            headers.add("Authorization", jwtToken);
+            headers.add("Cookie", "accessToken="+jwtToken);
         }
 
         // Proceed with the request and get the response
