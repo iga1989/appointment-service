@@ -2,6 +2,7 @@ package com.danieliga.appointment.service.config;
 
 import com.danieliga.appointment.service.dtos.HealthProvider;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
@@ -16,6 +17,7 @@ public interface HealthProviderClient {
     @GetExchange("/api/v1/healthproviders/available")
     @CircuitBreaker(name = "healthProvider", fallbackMethod = "getGeneralProviders")
     @Retry(name = "healthProvider")
+    @RateLimiter(name = "healthProvider")
     List<HealthProvider> getAvailableHealthProviders(@RequestParam LocalDate selectedDate, @RequestParam String department);
 
     default List<HealthProvider> getGeneralProviders(Throwable throwable) {

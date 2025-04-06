@@ -38,6 +38,12 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 3
         minimum-number-of-calls: 5
         automatic-transition-from-open-to-half-open-enabled: true
+  ratelimiter:
+    instances:
+      healthProvider:
+        limit-for-period: 1
+        limit-refresh-period: 5s
+        timeout-duration: 500ms
   retry:
     instances:
       healthProvider: # retry module name is "healthProvider" for healthProvider service
